@@ -1,11 +1,11 @@
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 public class User {
 
     private String name;
     private String surname;
-    private Date birthDate;
+    private Calendar birthDate;
     private boolean gender;
     private String eMail;
     private String password;
@@ -32,10 +32,10 @@ public class User {
         this.surname = surname;
     }
 
-    public Date getBirthDate () {
+    public Calendar getBirthDate () {
         return birthDate;
     }
-    public void setBirtDate (Date birthDate) {
+    public void setBirthDate (Calendar birthDate) {
         this.birthDate = birthDate;
     }
 
