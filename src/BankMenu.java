@@ -1,12 +1,13 @@
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class BankMenu {
 
     private final Bank bank;
+    private final User newUser = new User();
 
-    Scanner sc = new Scanner (System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     public void showStartMenu() {
         System.out.println ("Select one:\n1) Login\n2) Register\n3) Exit");
@@ -14,7 +15,6 @@ public class BankMenu {
         if (i == 1) showLogin();
         else if (i == 2) showRegister();
         else System.exit(0);
-        sc.close();
     }
 
     public BankMenu (Bank bank) {
@@ -22,47 +22,60 @@ public class BankMenu {
     }
 
     public void showBankMenu() {
-        System.out.println ("Select one:\n1) Show my info\n2) Add Loan\n3) Add debit Card");
+        if (bank.getCurrentUserName() == null) System.out.println ("Select one:\n1) Show my info\n2) Add Loan\n3) Add debit Card");
+        else
+            System.out.println ("Hello, " + bank.getCurrentUserName() + "! Select one:\n1) Show my info\n2) Add Loan\n3) Add debit Card");
     }
 
     private void showLogin() {
         System.out.println("Enter your e-mail:");
-        String e = sc.nextLine();
+        newUser.setEMail(sc.next());
         System.out.println("Enter your Password:");
-        String p = sc.nextLine();
-        bank.doLogin(e, p);
+        newUser.setPassword(sc.next());
+        if (bank.doLogin(newUser)) showBankMenu();
+        else {
+            System.out.println ("E-Mail or Password is wrong" );
+            showStartMenu();
+        }
     }
 
     private void showRegister() {
-        User u = new User();
+
         System.out.println("Enter your Name:");
-        String name = sc.nextLine();
-        u.setName(name);
+        newUser.setName(sc.next());
+
         System.out.println("Enter your Surname:");
-        String surname = sc.nextLine();
-        u.setSurname(surname);
-        System.out.println("Enter your Year of Birth:");
-        int year = sc.nextInt();
-        System.out.println("Enter your Month of Birth (format: 1, 10, 12...etc:");
-        int month = sc.nextInt();
-        month = month - 1;
-        System.out.println("Enter your Day of Birth:");
-        int day = sc.nextInt();
-        Calendar birthDate = new GregorianCalendar(year, month, day);
-        u.setBirthDate(birthDate);
-        System.out.println("Set your Gender:\n1) Male\n 2) Female");
-        int g = sc.nextInt();
-        boolean gender;
-        if (g == 1) gender = true;
-        else gender = false;
-        u.setGender(gender);
+        newUser.setSurname(sc.next());
+
+        Date birthDate = null;
+
+        SimpleDateFormat date = new SimpleDateFormat("dd.MM.yyyy");
+        System.out.println("Enter your Date of Birth, format DD.MM.YYYY:");
+        do {
+        try {
+            birthDate = date.parse(sc.next());
+        }
+        catch (Exception ex) {
+            System.out.println("Enter your Date of Birth correctly (format DD.MM.YYYY)!");
+        }
+        } while (birthDate == null);
+        newUser.setBirthDate(birthDate);
+
+        System.out.println("Set your Gender:\n1) Male\n2) Female");
+        newUser.setGender(sc.nextInt() == 1);
+
         System.out.println("Enter your E-mail:");
-        String eMail = sc.nextLine();
-        u.setEMail(eMail);
+        newUser.setEMail(sc.next());
+
         System.out.println("Enter your Password:");
-        String password = sc.nextLine();
-        u.setPassword(password);
-        bank.doRegister(u);
+        newUser.setPassword(sc.next());
+
+        bank.doRegister(newUser);
+    }
+    public void repeatEMail() {
+        System.out.println ("This E-mail is occupied. Enter another E-Mail:");
+        newUser.setEMail(sc.next());
+        bank.doRegister(newUser);
     }
 
 
