@@ -1,7 +1,8 @@
 import java.util.Date;
 
-public class Loan {
+public abstract class Loan {
 
+    private String type;
     private Date regDate;
     private double amount;
     private double rate; //interest Rate
@@ -10,7 +11,7 @@ public class Loan {
 
     @Override
     public String toString () {
-        return ("Registration Date: " + regDate + "\nAmount: " + amount + "\nInterest Rate: " + rate + "\nTerm: " + term
+        return ("\nType " + type + "\nRegistration Date: " + regDate + "\nAmount: " + amount + "\nInterest Rate: " + rate + "\nTerm: " + term
         + "\nMonthly Payment: " + payment);
     }
 

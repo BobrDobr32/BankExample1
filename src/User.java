@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class User implements Serializable {
     private boolean gender;
     private String eMail;
     private String password;
-    private List<Loan> loanList;
+    private ArrayList<Loan> loanList;
     private List<DebitCard> dbtCardList;
 
     public String getName() {
@@ -58,7 +59,7 @@ public class User implements Serializable {
     public List<Loan> getLoanList() {
         return loanList;
     }
-    public void setLoanList (List<Loan> loanList) {
+    public void setLoanList (ArrayList<Loan> loanList) {
         this.loanList = loanList;
     }
 
