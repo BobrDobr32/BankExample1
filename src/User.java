@@ -56,7 +56,7 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public List<Loan> getLoanList() {
+    public ArrayList<Loan> getLoanList() {
         return loanList;
     }
     public void setLoanList (ArrayList<Loan> loanList) {

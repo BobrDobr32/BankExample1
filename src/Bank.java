@@ -3,12 +3,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Bank implements Serializable {
+public class Bank {
 
     private final String FILE_NAME = "Users.dat";
 
     private User currentUser;
+
     private int currentUserIndex;
+
+    private List<Loan> bankLoanList;
 
     private final BankMenu menu = new BankMenu(this);
 
@@ -25,6 +28,11 @@ public class Bank implements Serializable {
     public String getCurrentUserName() {
        return currentUser.getName();
     }// Переписать!
+
+    public void setBankLoanList(Object object) {
+        Class finder = object.getClass();
+        System.out.println(finder);
+    }
 
     public User getCurrentUser() {
         return currentUser;
@@ -48,7 +56,8 @@ public class Bank implements Serializable {
             System.out.println ("Invalid Deserialization");
             File f = new File(FILE_NAME);
             try {
-                f.createNewFile();
+                if (!f.createNewFile())
+                    System.out.println("Invalid File Creation");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -82,14 +91,15 @@ public class Bank implements Serializable {
 
     }
 
-    public void doAddLoan(int choice) {
-        ArrayList<Loan> currentLoanList = (ArrayList<Loan>) currentUser.getLoanList();
+    public void doAddLoan(int choice, double amount) {
+        ArrayList<Loan> currentLoanList = currentUser.getLoanList();
         Loan n;
 
         if (choice == 1) n = new Mortgage();
         else n = new CarLoan();
+        n.setAmount(amount);
         currentLoanList.add(n);
-        currentUser.setLoanList(currentLoanList);
+        //currentUser.setLoanList(currentLoanList);
         users.set(currentUserIndex, currentUser);
         serializeUsers(users);
         menu.showBankMenu();
@@ -97,7 +107,7 @@ public class Bank implements Serializable {
 
     public void start () {
        deserializeUsers();
-       System.out.println (users.size());
+       //System.out.println (users.size());
        menu.showStartMenu();
     }
 }

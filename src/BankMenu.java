@@ -70,19 +70,20 @@ public class BankMenu {
                 Choose the Loan:
                 
                 1) The best Mortgage:
-                Amount 100000$
+                Amount from 50000 $ to 100000$
                 Interest Rate 4,5%
                 Loan Term 120 months
                  Monthly payment 1500$
                  
                 2) The best Car Loan:
-                Amount 20000$
+                Amount from 5000$ to 20000$
                 Interest Rate 9,5%
                 Loan Term 36 months
                  Monthly payment 900$
                  
                 """);
         int choice;
+        double amount;
         while (true) {
             try {
                 choice = sc.nextInt();
@@ -95,7 +96,20 @@ public class BankMenu {
                 break;
                 System.out.println("Choose the Option (enter the correct Number):");
         }
-        bank.doAddLoan(choice);
+        System.out.println ("Enter the wishful Amount:");
+        while (true) {
+            try {
+                amount = sc.nextDouble();
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Input may contains the Digits only:");
+                continue;
+            }
+            if ((choice == 1 && amount >= 5000 && amount <= 20000)|| (choice == 2 && amount >= 50000 && amount <= 100000))
+                break;
+            System.out.println("Amount may be in specified Range for current Loan. Try the Input again");
+        }
+        bank.doAddLoan(choice, amount);
     }
 
     public void showCardMenu() {}
