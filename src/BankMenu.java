@@ -39,7 +39,9 @@ public class BankMenu {
     public void showBankMenu() {
         int i;
         User currentUser = bank.getCurrentUser();
-        if (currentUser == null) System.out.println ("Select one:\n1) Show my info\n2) Add Loan\n3) Add debit Card");
+        if (currentUser.getIsAdmin()) {
+            System.out.println ("Hello, " + currentUser.getName() + "! Select one:\n1) Show my info\n2) Add Loan\n3) Add debit Card\n4) Show Statistics");
+        }
         else
             System.out.println ("Hello, " + currentUser.getName() + "! Select one:\n1) Show my info\n2) Add Loan\n3) Add debit Card");
         while (true) {
@@ -50,7 +52,7 @@ public class BankMenu {
                 System.out.println("Choose the Option (enter the correct Number):");
                 continue;
             }
-            if (i == 1 || i ==2 || i == 3)
+            if (((i > 0 && i <= 3) || (i == 4 && currentUser.getIsAdmin())))
                 break;
             System.out.println("Choose the Option (enter the correct Number):");
         }
@@ -60,9 +62,9 @@ public class BankMenu {
         }
         else if (i == 2)
             showLoanMenu();
-        else showCardMenu();
-
-
+        else if (i == 3)
+            showCardMenu();
+        bank.getStatistics();
     }
 
     public void showLoanMenu () {
@@ -105,14 +107,45 @@ public class BankMenu {
                 System.out.println("Input may contains the Digits only:");
                 continue;
             }
-            if ((choice == 1 && amount >= 5000 && amount <= 20000)|| (choice == 2 && amount >= 50000 && amount <= 100000))
+            if ((choice == 2 && amount >= 5000 && amount <= 20000) || (choice == 1 && amount >= 50000 && amount <= 100000))
                 break;
             System.out.println("Amount may be in specified Range for current Loan. Try the Input again");
         }
         bank.doAddLoan(choice, amount);
     }
 
-    public void showCardMenu() {}
+    public void showCardMenu() {
+        int choice;
+        double currBalance;
+
+        System.out.println("Do you want a debit Card?");
+        while (true) {
+            try {
+                choice = sc.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Choose the Option (enter the correct Number):");
+                continue;
+            }
+            if (choice == 1 || choice == 2)
+                break;
+            System.out.println("Choose the Option (enter the correct Number):");
+        }
+
+        if (choice == 2) showBankMenu();
+
+
+            System.out.println("Enter the Balance:");
+        while (true) {
+            try {
+                currBalance = sc.nextDouble();
+            } catch (InputMismatchException e) {
+                System.out.println("Input may contains the Digits only:");
+                continue;
+            }
+            break;
+        }
+        bank.addDebitCard(currBalance);
+    }
 
     private void showLogin() {
         System.out.println("Enter your e-mail:");

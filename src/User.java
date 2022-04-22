@@ -1,18 +1,33 @@
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class User implements Serializable {
 
+    private boolean isAdmin;
     private String name;
     private String surname;
     private Date birthDate;
     private boolean gender;
     private String eMail;
     private String password;
+    private LocalDateTime regDate;
     private ArrayList<Loan> loanList;
-    private List<DebitCard> dbtCardList;
+    private ArrayList<DebitCard> dbtCardList;
+
+    public LocalDateTime getRegDate() {
+        return regDate;
+    }
+
+    public void setRegDate(LocalDateTime regDate) {
+        this.regDate = regDate;
+    }
+
+    public boolean getIsAdmin() {return isAdmin;}
+    public void setIsAdmin(boolean isAdmin) {this.isAdmin = isAdmin;}
 
     public String getName() {
        return name;
@@ -63,10 +78,10 @@ public class User implements Serializable {
         this.loanList = loanList;
     }
 
-    public List<DebitCard> getDbtCardList() {
+    public ArrayList<DebitCard> getDbtCardList() {
         return dbtCardList;
     }
-    public void setDbtCardList(List<DebitCard> dbtCardList) {
+    public void setDbtCardList(ArrayList<DebitCard> dbtCardList) {
         this.dbtCardList = dbtCardList;
     }
 
@@ -79,8 +94,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return ("Name: " + name + "\nSurname: " + surname + "\nBirth Date: " + birthDate + "\nGender: " + gender +
-                "\nE-mail: " + eMail + "\nPassword: " + password + "\nLoans: " + loanList + "\nDebit Cards: " + dbtCardList);
+        return ("Name: " + name + "\nE-mail: " + eMail + "\nLoans: " + loanList.size() + "\nDebit Cards: " + dbtCardList.size());
     }
 
     @Override

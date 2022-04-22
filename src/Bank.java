@@ -1,6 +1,15 @@
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 
 public class Bank {
@@ -10,8 +19,6 @@ public class Bank {
     private User currentUser;
 
     private int currentUserIndex;
-
-    private List<Loan> bankLoanList;
 
     private final BankMenu menu = new BankMenu(this);
 
@@ -79,11 +86,17 @@ public class Bank {
     }
 
     public void doRegister (User newUser) {
+        LocalDateTime today = LocalDateTime.now();
+        newUser.setRegDate(today);
+        newUser.setLoanList(new ArrayList<>());
+        newUser.setDbtCardList(new ArrayList<>());
         if (users.contains(newUser)) {
             menu.repeatEMail();
         }
         else {
             users.add(newUser);
+            if (users.get(0).equals(newUser))
+                newUser.setIsAdmin(true);
             serializeUsers(users);
             currentUser = newUser;
             menu.showBankMenu();
@@ -99,10 +112,37 @@ public class Bank {
         else n = new CarLoan();
         n.setAmount(amount);
         currentLoanList.add(n);
-        //currentUser.setLoanList(currentLoanList);
-        users.set(currentUserIndex, currentUser);
         serializeUsers(users);
         menu.showBankMenu();
+    }
+
+    public void addDebitCard(double currBalance) {
+        ArrayList<DebitCard> currentDbtCrdList = currentUser.getDbtCardList();
+        DebitCard dbtCrd = new DebitCard();
+        LocalDate today = LocalDate.now();
+
+        dbtCrd.setCurrBalance(currBalance);
+        dbtCrd.setExpDate(today.plusYears(4));
+        dbtCrd.setCardNumber("4276080015933475");
+        dbtCrd.setCvv(343);
+        currentDbtCrdList.add(dbtCrd);
+        serializeUsers(users);
+        menu.showBankMenu();
+    }
+
+    public void getStatistics(){
+        Integer packer = 1;
+        System.out.println("1) Last Day registered Users:");
+        List<User> lastDayUsers = users.stream().filter((user) -> user.getRegDate().isAfter(LocalDateTime.now().minusHours(24))).toList();
+        System.out.println(lastDayUsers);
+        System.out.println();
+        System.out.println("2) Count of Loans sorting:");
+        List<User> loansSortedUsers = users.stream().sorted((u1, u2) -> -u1.getLoanList().size()*packer.compareTo(u2.getLoanList().size())).toList();
+        System.out.println(loansSortedUsers);
+        System.out.println();
+        System.out.println("3) Groping by count of debit Cards:");
+        Map<Integer, List<User>> map = users.stream().collect(groupingBy(user -> user.getDbtCardList().size()));
+        System.out.println(map);
     }
 
     public void start () {

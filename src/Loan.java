@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Date;
 
-public abstract class Loan {
+public abstract class Loan implements Serializable {
 
     protected String type;
     private Date regDate;

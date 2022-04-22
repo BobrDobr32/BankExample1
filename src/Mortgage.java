@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Date;
 
-public class Mortgage extends Loan{
+public class Mortgage extends Loan implements Serializable {
     private String type = "The best Mortgage";
     private final Date regDate = new Date();
     protected double amount = 100000.0;

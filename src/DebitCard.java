@@ -1,10 +1,12 @@
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
-public class DebitCard {
+public class DebitCard implements Serializable {
 
     private double currBalance;
     private String cardNumber;
-    private Date expDate; //expiration Date
+    private LocalDate expDate; //expiration Date
     private int cvv;
 
     @Override
@@ -16,7 +18,7 @@ public class DebitCard {
     public double getCurrBalance () {
         return currBalance;
     }
-    public void setCarrBalance (double currBalance) {
+    public void setCurrBalance (double currBalance) {
         this.currBalance = currBalance;
     }
 
@@ -27,10 +29,10 @@ public class DebitCard {
         this.cardNumber = cardNumber;
     }
 
-    public Date getExpDate () {
+    public LocalDate getExpDate () {
         return expDate;
     }
-    public void setExpDate (Date expDate) {
+    public void setExpDate (LocalDate expDate) {
         this.expDate = expDate;
     }
 

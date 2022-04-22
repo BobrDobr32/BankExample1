@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Date;
 
-public class CarLoan extends Loan{
+public class CarLoan extends Loan implements Serializable {
 
     private final String type = "The best Car Loan";
     private final Date regDate = new Date();
